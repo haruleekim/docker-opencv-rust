@@ -26,6 +26,6 @@ RUN cmake --build . --target install
 RUN rm -rf /opencv
 
 # Pass environment variables
-ENV LD_LIBRARY_PATH=/usr/local/bin
+ENV LD_LIBRARY_PATH=/usr/local/lib
 ENV OpenCV_DIR=/usr/local/lib/cmake/opencv4
 
