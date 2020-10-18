@@ -4,9 +4,34 @@ FROM rust
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 
 # Install dependencies
-RUN apt-get install -y --no-install-recommends g++ cmake wget unzip
-RUN apt-get install -y --no-install-recommends libavcodec-dev libavformat-dev libavutil-dev libswscale-dev
-RUN apt-get install -y --no-install-recommends clang libclang-dev
+RUN apt-get install -y --no-install-recommends clang libclang-dev g++ cmake pkg-config wget unzip
+RUN apt-get install -y --no-install-recommends \
+		build-essential \
+		libatlas-base-dev \
+		libavcodec-dev \
+		libavformat-dev \
+		libavresample-dev \
+		libceres-dev \
+		libdc1394-22-dev \
+		libeigen3-dev \
+		libfreetype6-dev \
+		libgdal-dev \
+		libgflags-dev \
+		libgoogle-glog-dev \
+		libgphoto2-dev \
+		libgstreamer-plugins-base1.0-dev \
+		libharfbuzz-dev \
+		libhdf5-dev \
+		libjpeg-dev \
+		liblapacke-dev \
+		libleptonica-dev \
+		libopenexr-dev \
+		libpng-dev \
+		libswscale-dev \
+		libtbb-dev \
+		libtesseract-dev \
+		libtiff-dev \
+		libwebp-dev
 
 # Install OpenCV
 WORKDIR /
@@ -16,16 +41,14 @@ RUN mv opencv-master opencv
 RUN mkdir opencv/build
 WORKDIR /opencv/build
 RUN cmake \
-    -DBUILD_TESTS=OFF \
-    -DBUILD_PERF_TESTS=OFF \
-    -DBUILD_EXAMPLES=OFF \
-    -DBUILD_opencv_apps=ALL \
-    -DBUILD_SHARED_LIBS=ON \
+    -D BUILD_TESTS=OFF \
+    -D BUILD_PERF_TESTS=OFF \
+    -D BUILD_EXAMPLES=OFF \
+    -D BUILD_opencv_apps=ALL \
+    -D BUILD_SHARED_LIBS=ON \
+    -D OPENCV_GENERATE_PKGCONFIG=ON \
     ..
-RUN cmake --build . --target install
+RUN make -j4
+RUN make install
 RUN rm -rf /opencv
-
-# Pass environment variables
-ENV LD_LIBRARY_PATH=/usr/local/lib
-ENV OpenCV_DIR=/usr/local/lib/cmake/opencv4
 
