@@ -50,5 +50,4 @@ RUN cmake \
     ..
 RUN make -j4
 RUN make install
-RUN rm -rf /opencv
 
